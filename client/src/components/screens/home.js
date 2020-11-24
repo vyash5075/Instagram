@@ -182,18 +182,26 @@ const Home = () => {
                   delete
                 </i>
               )}
-              {
-                <img
-                  style={{
-                    float: "left",
-                    height: "35px",
-                    width: "30px",
-                    borderRadius: "20px",
-                    marginRight: "10px",
-                  }}
-                  src={item.postedBy.pic}
-                />
-              }
+              <Link
+                to={
+                  item.postedBy._id !== state._id
+                    ? "/profile/" + item.postedBy._id
+                    : "/profile"
+                }
+              >
+                {
+                  <img
+                    style={{
+                      float: "left",
+                      height: "35px",
+                      width: "30px",
+                      borderRadius: "20px",
+                      marginRight: "10px",
+                    }}
+                    src={item.postedBy.pic}
+                  />
+                }
+              </Link>
             </h5>
             <div className="card-image">
               <img style={{ height: "65vh" }} src={item.photo} />

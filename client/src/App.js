@@ -8,6 +8,8 @@ import Signup from "./components/screens/signup";
 import CreatePost from "./components/screens/createPost";
 import UserProfile from "./components/screens/UserProfile";
 import Subscribefollowers from "./components/screens/SubscribeUserPosts";
+import Reset from "./components/screens/Reset";
+import NewPassword from "./components/screens/Newpassword";
 import { reducer, initialState } from "./reducers/reducer";
 import Navbar from "./components/navbar";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -50,6 +52,12 @@ const Routing = () => {
 
         <Route path="/myfollowings" exact>
           <Subscribefollowers></Subscribefollowers>
+        </Route>
+        <Route exact path="/reset">
+          <Reset />
+        </Route>
+        <Route path="/reset/:token">
+          <NewPassword />
         </Route>
       </Switch>
     </>
