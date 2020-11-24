@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { userContext } from "../../App";
 import { Link } from "react-router-dom";
 const Home = () => {
+  //var a = 0;
   const [data, setData] = useState([]);
+  const [inc, setinc] = useState(0);
   const { state, dispatch } = useContext(userContext);
   useEffect(() => {
     fetch("http://localhost:4000/post/allposts", {
@@ -18,6 +20,8 @@ const Home = () => {
   }, []);
 
   const likePost = (id) => {
+    setinc(inc + 1);
+
     fetch("http://localhost:4000/post/like", {
       method: "put",
       headers: {
@@ -39,12 +43,15 @@ const Home = () => {
           }
         });
         setData(newData);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const unlikePost = (id) => {
+    setinc(inc + 1);
+
     fetch("http://localhost:4000/post/unlike", {
       method: "put",
       headers: {
@@ -66,6 +73,7 @@ const Home = () => {
           }
         });
         setData(newData);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -82,6 +90,37 @@ const Home = () => {
       body: JSON.stringify({
         postId,
         text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((item) => {
+          if (item._id == result._id) {
+            console.log(result);
+            return result;
+          } else {
+            console.log(item);
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deletecomment = (postId, commentId) => {
+    fetch("http://localhost:4000/post/deletecomment", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        commentId,
       }),
     })
       .then((res) => res.json())
@@ -143,9 +182,21 @@ const Home = () => {
                   delete
                 </i>
               )}
+              {
+                <img
+                  style={{
+                    float: "left",
+                    height: "35px",
+                    width: "30px",
+                    borderRadius: "20px",
+                    marginRight: "10px",
+                  }}
+                  src={item.postedBy.pic}
+                />
+              }
             </h5>
             <div className="card-image">
-              <img src={item.photo} />
+              <img style={{ height: "65vh" }} src={item.photo} />
             </div>
             <div className="card-content">
               <i className="material-icons" style={{ color: "red" }}>
@@ -185,6 +236,9 @@ const Home = () => {
                         {record.postedBy.name}:
                         {record.postedBy._id == state._id && (
                           <i
+                            onClick={() => {
+                              deletecomment(item._id, record._id);
+                            }}
                             className="material-icons"
                             style={{
                               float: "right",

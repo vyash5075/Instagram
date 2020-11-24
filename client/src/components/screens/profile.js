@@ -29,7 +29,7 @@ const Profile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          fetch("/updatepic", {
+          fetch("http://localhost:4000/user/updatepic", {
             method: "put",
             headers: {
               "Content-Type": "application/json",
@@ -55,6 +55,7 @@ const Profile = () => {
         });
     }
   }, [image]);
+
   const updatePhoto = (file) => {
     setImage(file);
   };
@@ -76,8 +77,8 @@ const Profile = () => {
           <div>
             <img
               style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-              // src={state ? state.pic : "loading"}
-              src="http://res.cloudinary.com/instagramphotos/image/upload/v1605956714/qs3a84pwfktib6rsg9px.jpg"
+              src={state ? state.pic : "loading"}
+              // src="http://res.cloudinary.com/instagramphotos/image/upload/v1605956714/qs3a84pwfktib6rsg9px.jpg"
             />
           </div>
           <div>
@@ -91,10 +92,10 @@ const Profile = () => {
               }}
             >
               <h6>{mypics.length} posts</h6>
-              {/* <h6>{state ? state.followers.length : "0"} followers</h6> */}
-              {/* <h6>{state ? state.following.length : "0"} following</h6> */}
-              <h6> followers</h6>
-              <h6> followers</h6>
+              <h6>{state ? state.followers.length : "0"} followers</h6>
+              <h6>{state ? state.following.length : "0"} following</h6>
+              {/* <h6> followers</h6> */}
+              {/* <h6> followers</h6> */}
             </div>
           </div>
         </div>
@@ -117,6 +118,7 @@ const Profile = () => {
           return (
             <img
               key={item._id}
+              style={{ height: "200px" }}
               className="item"
               src={item.photo}
               alt={item.title}

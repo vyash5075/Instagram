@@ -6,10 +6,10 @@ const Profile = () => {
 
   const { state, dispatch } = useContext(userContext);
   const { userid } = useParams();
-  //   const [showfollow, setShowFollow] = useState(
-  //     state ? !state.following.includes(userid) : true
-  //   );
-  const [showfollow, setShowFollow] = useState(true);
+  const [showfollow, setShowFollow] = useState(
+    state ? !state.following.includes(userid) : true
+  );
+  //const [showfollow, setShowFollow] = useState(true);
   useEffect(() => {
     fetch(`http://localhost:4000/user/${userid}`, {
       headers: {
@@ -107,8 +107,8 @@ const Profile = () => {
                   height: "160px",
                   borderRadius: "80px",
                 }}
-                // src={userProfile.user.pic}
-                src="http://res.cloudinary.com/instagramphotos/image/upload/v1605956714/qs3a84pwfktib6rsg9px.jpg"
+                src={userProfile.user.pic}
+                // src="http://res.cloudinary.com/instagramphotos/image/upload/v1605956714/qs3a84pwfktib6rsg9px.jpg"
               />
             </div>
             <div>

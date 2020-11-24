@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const checkAuth = require("../middleware/requirelogin");
 
 router.post("/signup", (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, pic } = req.body;
   const { ContentType } = req.headers;
   if (!email || !password || !name) {
     return res.status(422).json({ error: "Please  add all the fields" });
@@ -25,6 +25,7 @@ router.post("/signup", (req, res) => {
               email: email,
               password: hashedpassword,
               name: name,
+              pic: pic,
             });
             user
               .save()
@@ -59,7 +60,14 @@ router.post("/signin", (req, res) => {
               if (doMatch) {
                 // res.status(200).json({message:"Successfull"})
                 const token = jwt.sign({ id: saveduser._id }, JWT_SECRET);
-                const { _id, name, email, followers, following } = saveduser;
+                const {
+                  _id,
+                  name,
+                  email,
+                  followers,
+                  following,
+                  pic,
+                } = saveduser;
                 res.status(200).json({
                   message: "Successfull",
                   token: token,
@@ -69,6 +77,7 @@ router.post("/signin", (req, res) => {
                     email,
                     followers,
                     following,
+                    pic,
                   },
                 });
               } else {

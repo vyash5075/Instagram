@@ -30,8 +30,9 @@ router.post("/createpost", checkAuth, (req, res) => {
 
 router.get("/allposts", checkAuth, (req, res) => {
   Post.find()
-    .populate("postedBy", "_id name")
+    .populate("postedBy", "_id name pic")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json({ posts: posts });
     })
@@ -45,6 +46,7 @@ router.get("/getsubpost", checkAuth, (req, res) => {
   Post.find({ postedBy: { $in: req.user.following } })
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json({ posts: posts });
     })
@@ -124,24 +126,46 @@ router.put("/comment", checkAuth, (req, res) => {
       }
     });
 });
-
-router.delete("/deletepost/:postId", checkAuth, (req, res) => {
-  Post.findOne({ _id: req.params.postId })
-    .populate("postedBy", "_id")
-    .exec((err, post) => {
-      if (err || !post) {
-        return res.status(422).json({ error: err });
+router.put("/deletecomment", (req, res) => {
+  const _id = req.body.commentId;
+  console.log(req.body.postId);
+  console.log(req.body.commentId);
+  Post.findOne({ _id: req.body.postId })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .then((postexist) => {
+      if (postexist) {
+        console.log(postexist);
+        postexist.comments = postexist.comments.filter((comment) => {
+          return comment._id.toString() !== _id.toString();
+        });
+        postexist
+          .save()
+          .then((result) => res.json(result))
+          .catch((err) => console.log(err));
+      } else {
+        res.status(422).json({ err: "post not exists" });
       }
-      if (post.postedBy._id.toString() === req.user._id.toString()) {
-        post
-          .remove()
-          .then((result) => {
-            res.json(result);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    });
-});
+    })
+    .catch((err) => console.log(err));
+}),
+  router.delete("/deletepost/:postId", checkAuth, (req, res) => {
+    Post.findOne({ _id: req.params.postId })
+      .populate("postedBy", "_id")
+      .exec((err, post) => {
+        if (err || !post) {
+          return res.status(422).json({ error: err });
+        }
+        if (post.postedBy._id.toString() === req.user._id.toString()) {
+          post
+            .remove()
+            .then((result) => {
+              res.json(result);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+  });
 module.exports = router;
