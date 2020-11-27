@@ -7,7 +7,7 @@ const Home = () => {
   const [inc, setinc] = useState(0);
   const { state, dispatch } = useContext(userContext);
   useEffect(() => {
-    fetch("http://localhost:4000/post/allposts", {
+    fetch("https://instagrmbackend.herokuapp.com/post/allposts", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
@@ -22,7 +22,7 @@ const Home = () => {
   const likePost = (id) => {
     setinc(inc + 1);
 
-    fetch("http://localhost:4000/post/like", {
+    fetch("https://instagrmbackend.herokuapp.com/post/like", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const Home = () => {
   const unlikePost = (id) => {
     setinc(inc + 1);
 
-    fetch("http://localhost:4000/post/unlike", {
+    fetch("https://instagrmbackend.herokuapp.com/post/unlike", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const Home = () => {
   };
 
   const makeComment = (text, postId) => {
-    fetch("http://localhost:4000/post/comment", {
+    fetch("https://instagrmbackend.herokuapp.com/post/comment", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,8 @@ const Home = () => {
   };
 
   const deletecomment = (postId, commentId) => {
-    fetch("http://localhost:4000/post/deletecomment", {
+    console.log("del");
+    fetch("https://instagrmbackend.herokuapp.com/post/deletecomment", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +142,7 @@ const Home = () => {
   };
 
   const deletePost = (postid) => {
-    fetch(`http://localhost:4000/post/deletepost/${postid}`, {
+    fetch(`https://instagrmbackend.herokuapp.com/post/deletepost/${postid}`, {
       method: "delete",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),

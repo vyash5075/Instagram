@@ -6,7 +6,7 @@ const Profile = () => {
   const { state, dispatch } = useContext(userContext);
   const [image, setImage] = useState("");
   useEffect(() => {
-    fetch("http://localhost:4000/post/myposts", {
+    fetch("https://instagrmbackend.herokuapp.com/post/myposts", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
@@ -29,7 +29,7 @@ const Profile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          fetch("http://localhost:4000/user/updatepic", {
+          fetch("https://instagrmbackend.herokuapp.com/user/updatepic", {
             method: "put",
             headers: {
               "Content-Type": "application/json",

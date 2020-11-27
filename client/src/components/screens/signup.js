@@ -41,7 +41,7 @@ const Signup = () => {
       M.toast({ html: "invalid email", classes: "#c62828 red darken-3" });
       return;
     }
-    fetch("http://localhost:4000/signup", {
+    fetch("https://instagrmbackend.herokuapp.com/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

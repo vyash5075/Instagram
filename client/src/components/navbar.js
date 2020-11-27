@@ -79,7 +79,7 @@ const Navbar = () => {
 
   const fetchUsers = (query) => {
     setSearch(query);
-    fetch("http://localhost:4000/user/search-users", {
+    fetch("https://instagrmbackend.herokuapp.com/user/search-users", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

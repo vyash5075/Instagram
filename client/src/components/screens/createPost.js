@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import M from "materialize-css";
+import imageCompression from "browser-image-compression";
 import { Link, useHistory } from "react-router-dom";
 const CreatePost = () => {
   const history = useHistory();
@@ -10,7 +11,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     if (url) {
-      fetch("http://localhost:4000/post/createpost", {
+      fetch("https://instagrmbackend.herokuapp.com/post/createpost", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -40,9 +41,15 @@ const CreatePost = () => {
     }
   }, [url]);
 
-  const postDetails = () => {
+  const postDetails = async () => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
     const data = new FormData();
-    data.append("file", image);
+    const compressedFile = await imageCompression(image, options);
+    data.append("file", compressedFile);
     data.append("upload_preset", "insta-clone");
     data.append("cloud_name", "instagramphotos");
     fetch("https://api.cloudinary.com/v1_1/instagramphotos/image/upload", {
@@ -52,6 +59,7 @@ const CreatePost = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        console.log("..............." + data.url);
         setUrl(data.url);
       })
       .catch((err) => console.log(err));
@@ -82,6 +90,7 @@ const CreatePost = () => {
       <div className="file-field input-field">
         <div className="btn #64b5f6 blue darken-1">
           <span>Upload Image</span>
+          {/* <input type="file" onChange={(e) => setImage(e.target.files[0])} /> */}
           <input type="file" onChange={(e) => setImage(e.target.files[0])} />
         </div>
         <div className="file-path-wrapper">

@@ -11,7 +11,7 @@ const Profile = () => {
   );
   //const [showfollow, setShowFollow] = useState(true);
   useEffect(() => {
-    fetch(`http://localhost:4000/user/${userid}`, {
+    fetch(`https://instagrmbackend.herokuapp.com/user/${userid}`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
@@ -25,7 +25,7 @@ const Profile = () => {
   }, []);
 
   const followUser = () => {
-    fetch("http://localhost:4000/user/follow", {
+    fetch("https://instagrmbackend.herokuapp.com/user/follow", {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const Profile = () => {
       });
   };
   const unfollowUser = () => {
-    fetch("http://localhost:4000/user/unfollow", {
+    fetch("https://instagrmbackend.herokuapp.com/user/unfollow", {
       method: "put",
       headers: {
         "Content-Type": "application/json",

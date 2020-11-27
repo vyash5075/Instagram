@@ -25,7 +25,9 @@ const Routing = () => {
       dispatch({ type: "USER", payload: user });
       // history.push("/");
     } else {
-      history.push("/signin");
+      if (!history.location.pathname.startsWith("/reset"))
+        history.push("/signin");
+      // history.push("/signin");
     }
   }, []);
   return (
@@ -75,5 +77,4 @@ function App() {
     </userContext.Provider>
   );
 }
-
 export default App;
